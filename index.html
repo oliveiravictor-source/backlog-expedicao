@@ -449,8 +449,17 @@
 </footer>
 
 <script>
-const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuGHzOGGvhYdzObPswcNq5QAe0vLDCCEWga8baQnaX4VUBvo31IqRt-gsDL1NarMVcVmCxbu6agY4H/pub?output=csv';
-const CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_CSV);
+const STATIC_DATA = [
+  {code:'FSP02', val:65},{code:'FMG01', val:64},{code:'FPE1', val:45},
+  {code:'FSP11', val:39},{code:'FSP09', val:30},{code:'FMG02', val:25},
+  {code:'FBA02', val:15},{code:'FMG03', val:15},{code:'FSP14', val:14},
+  {code:'SP30', val:14},{code:'FPR01', val:13},{code:'FSC02', val:10},
+  {code:'FSP10', val:10},{code:'FSP25', val:10},{code:'FMG04', val:10},
+  {code:'SP26', val:10},{code:'FSP06', val:9},{code:'FSP19', val:8},
+  {code:'FBA01', val:7},{code:'FSP04', val:6},{code:'FSP15', val:6},
+  {code:'FRJ02', val:6},{code:'FSP24', val:4},{code:'FSP18', val:4},
+  {code:'FDF1', val:3},{code:'FRS01', val:2}
+].sort((a,b) => b.val - a.val);
 const COLORS = ['#4f80ff','#2ecc9a','#ff9f43','#7c57ff','#ff5757','#f7c948','#50c8e8','#e879a0'];
 const REFRESH_SEC = 60;
 
@@ -591,31 +600,17 @@ function setStatus(state, msg) {
   document.getElementById('statusText').textContent = msg;
 }
 
-async function loadData() {
-  setStatus('loading', 'Atualizando...');
+function loadData() {
+  setStatus('loading', 'Carregando...');
   document.getElementById('errorBox').style.display = 'none';
   if (timer) clearInterval(timer);
   try {
-    const res = await fetch(CSV_URL + '&t=' + Date.now());
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    const data = parseCSV(text);
-    if (!data.length) throw new Error('Nenhum dado encontrado');
-    renderDash(data);
+    renderDash(STATIC_DATA);
     const now = new Date().toLocaleString('pt-BR');
-    document.getElementById('lastUpdate').textContent = 'Última atualização: ' + now;
+    document.getElementById('lastUpdate').textContent = 'Dados carregados: ' + now;
     setStatus('ok', 'Ao vivo');
-    countdown = REFRESH_SEC;
-    timer = setInterval(() => {
-      countdown--;
-      if (countdown <= 0) loadData();
-    }, 1000);
   } catch (e) {
     setStatus('error', 'Erro ao carregar');
-    const eb = document.getElementById('errorBox');
-    eb.style.display = 'block';
-    eb.textContent = '⚠ Não foi possível carregar os dados: ' + e.message + '. Verifique se a planilha está publicada corretamente no Google Sheets.';
-    document.getElementById('lastUpdate').textContent = 'Falha ao atualizar';
   }
 }
 
