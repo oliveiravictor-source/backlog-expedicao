@@ -450,7 +450,7 @@
 
 <script>
 const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTuGHzOGGvhYdzObPswcNq5QAe0vLDCCEWga8baQnaX4VUBvo31IqRt-gsDL1NarMVcVmCxbu6agY4H/pub?output=csv';
-const CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent(SHEET_CSV);
+const CSV_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_CSV);
 const COLORS = ['#4f80ff','#2ecc9a','#ff9f43','#7c57ff','#ff5757','#f7c948','#50c8e8','#e879a0'];
 const REFRESH_SEC = 60;
 
@@ -596,7 +596,7 @@ async function loadData() {
   document.getElementById('errorBox').style.display = 'none';
   if (timer) clearInterval(timer);
   try {
-    const res = await fetch(SHEET_CSV + '&nocache=' + Date.now()).catch(() => fetch(CSV_URL));
+    const res = await fetch(CSV_URL + '&t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
     const data = parseCSV(text);
