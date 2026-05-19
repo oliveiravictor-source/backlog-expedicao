@@ -8,74 +8,282 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --bg: #0f1117; --bg2: #181c27; --bg3: #1e2436;
-    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-    --text: #f0f2f8; --text2: #8b91a8; --text3: #555d78;
-    --accent: #4f80ff; --accent2: #7c57ff;
-    --red: #ff5757; --orange: #ff9f43; --blue: #4f80ff; --green: #2ecc9a;
-    --red-bg: rgba(255,87,87,0.1); --orange-bg: rgba(255,159,67,0.1);
-    --blue-bg: rgba(79,128,255,0.1); --green-bg: rgba(46,204,154,0.1);
-    --radius: 12px; --radius-sm: 8px;
+    --bg: #0f1117;
+    --bg2: #181c27;
+    --bg3: #1e2436;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #f0f2f8;
+    --text2: #8b91a8;
+    --text3: #555d78;
+    --accent: #4f80ff;
+    --accent2: #7c57ff;
+    --red: #ff5757;
+    --orange: #ff9f43;
+    --blue: #4f80ff;
+    --green: #2ecc9a;
+    --red-bg: rgba(255,87,87,0.1);
+    --orange-bg: rgba(255,159,67,0.1);
+    --blue-bg: rgba(79,128,255,0.1);
+    --green-bg: rgba(46,204,154,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
   }
+
   html { font-size: 15px; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0; }
-  header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .logo { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; color: var(--text); }
-  .logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .status-pill { display: flex; align-items: center; gap: 6px; background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--text2); font-family: 'DM Mono', monospace; }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text);
+  }
+  .logo-icon {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+  }
   .status-dot.loading { background: var(--orange); animation: blink 1s infinite; }
   .status-dot.error { background: var(--red); }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
-  .interval-select { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 6px 10px; cursor: pointer; outline: none; }
-  .countdown-pill { background: var(--bg3); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; }
-  .refresh-btn { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s, border-color 0.15s; }
+
+  .interval-select {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+    outline: none;
+  }
+  .countdown-pill {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+  }
+  .refresh-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s, border-color 0.15s;
+  }
   .refresh-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
   .refresh-btn svg { width: 14px; height: 14px; }
   .refresh-btn.spin svg { animation: rotateSvg 0.8s linear infinite; }
   @keyframes rotateSvg { to { transform: rotate(360deg); } }
+
   main { padding: 1.75rem 2rem 3rem; max-width: 1400px; margin: 0 auto; }
-  .page-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .page-sub { font-size: 13px; color: var(--text3); margin-bottom: 1.75rem; font-family: 'DM Mono', monospace; }
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.75rem; }
-  .metric-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-sub {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 1.75rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 1.75rem;
+  }
+  .metric-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
   .metric-card:hover { border-color: var(--border2); }
-  .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0.6; }
-  .metric-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; margin-bottom: 8px; }
-  .metric-value { font-size: 32px; font-weight: 600; color: var(--text); line-height: 1; font-family: 'DM Mono', monospace; margin-bottom: 4px; }
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0.6;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .metric-value {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 4px;
+  }
   .metric-sub { font-size: 11px; color: var(--text3); }
-  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 1.75rem; }
-  .chart-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-  .chart-title { font-size: 13px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 1.75rem;
+  }
+  .chart-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
   .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
   .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-  .ranking-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 1.75rem; }
+
+  .ranking-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 1.75rem;
+  }
   .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .bar-label { font-size: 12px; color: var(--text2); width: 80px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+  .bar-label {
+    font-size: 12px; color: var(--text2); width: 80px;
+    text-align: right; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; font-family: 'DM Mono', monospace; flex-shrink: 0;
+  }
   .bar-track { flex: 1; background: var(--bg3); border-radius: 4px; height: 20px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
   .bar-num { font-size: 12px; color: var(--text2); width: 32px; text-align: right; font-family: 'DM Mono', monospace; flex-shrink: 0; }
-  .table-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 1.75rem; }
+
+  .table-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 1.75rem;
+  }
   .table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
-  thead th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); }
+  thead th {
+    text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 500;
+    color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em;
+    border-bottom: 1px solid var(--border);
+  }
   tbody td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text); }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover td { background: rgba(255,255,255,0.02); }
   .mono { font-family: 'DM Mono', monospace; font-size: 12px; }
-  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase;
+  }
   .badge-critico { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,87,87,0.2); }
   .badge-alto { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(255,159,67,0.2); }
   .badge-medio { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(79,128,255,0.2); }
   .badge-baixo { background: var(--green-bg); color: var(--green); border: 1px solid rgba(46,204,154,0.2); }
-  .error-box { background: var(--red-bg); border: 1px solid rgba(255,87,87,0.3); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; color: var(--red); margin-bottom: 1rem; display: none; }
-  footer { text-align: center; font-size: 11px; color: var(--text3); padding: 1rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
-  @media (max-width: 900px) { .metrics { grid-template-columns: repeat(2, 1fr); } .charts-row { grid-template-columns: 1fr; } main { padding: 1rem; } .countdown-pill { display: none; } }
-  @media (max-width: 500px) { .metrics { grid-template-columns: 1fr 1fr; } .metric-value { font-size: 24px; } }
+
+  .error-box {
+    background: var(--red-bg); border: 1px solid rgba(255,87,87,0.3);
+    border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px;
+    color: var(--red); margin-bottom: 1rem; display: none;
+  }
+
+  footer {
+    text-align: center; font-size: 11px; color: var(--text3);
+    padding: 1rem; border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+
+  @media (max-width: 900px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .charts-row { grid-template-columns: 1fr; }
+    main { padding: 1rem; }
+    .countdown-pill { display: none; }
+  }
+  @media (max-width: 500px) {
+    .metrics { grid-template-columns: 1fr 1fr; }
+    .metric-value { font-size: 24px; }
+  }
 </style>
 </head>
 <body>
@@ -113,6 +321,7 @@
   <div class="page-title">Dashboard de Backlog</div>
   <div class="page-sub" id="lastUpdate">Buscando dados...</div>
   <div id="errorBox" class="error-box"></div>
+
   <div class="metrics">
     <div class="metric-card">
       <div class="metric-label">Total de posições</div>
@@ -135,18 +344,19 @@
       <div class="metric-sub">26 posições por carreta</div>
     </div>
   </div>
+
   <div class="charts-row">
     <div class="chart-card">
       <div class="chart-title">Distribuição por prefixo</div>
       <div style="position:relative;height:200px;">
-        <canvas id="prefixChart"></canvas>
+        <canvas id="prefixChart" role="img" aria-label="Distribuição por prefixo de canalização"></canvas>
       </div>
       <div class="legend" id="prefixLegend"></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Faixas de criticidade</div>
       <div style="position:relative;height:200px;">
-        <canvas id="faixaChart"></canvas>
+        <canvas id="faixaChart" role="img" aria-label="Faixas de backlog por canalização"></canvas>
       </div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#ff5757"></div>Crítico (&gt;40)</div>
@@ -156,10 +366,12 @@
       </div>
     </div>
   </div>
+
   <div class="ranking-card">
     <div class="chart-title">Ranking de canalizações por posições no backlog</div>
     <div id="bars"></div>
   </div>
+
   <div class="table-card">
     <div class="table-header">
       <div class="chart-title" style="margin-bottom:0">Tabela detalhada</div>
@@ -168,8 +380,12 @@
       <table>
         <thead>
           <tr>
-            <th>Canalização</th><th>Prefixo</th><th>Posições no backlog</th>
-            <th>🚛 Carretas necessárias</th><th>Prioridade</th><th>% do total</th>
+            <th>Canalização</th>
+            <th>Prefixo</th>
+            <th>Posições no backlog</th>
+            <th>🚛 Carretas necessárias</th>
+            <th>Prioridade</th>
+            <th>% do total</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -183,28 +399,54 @@
 </footer>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/mercadolivre.com/s/AKfycbxbvIcE8ooFfPX-EckhFmkZ1uQcUwsge1dPmTwDzUs-tY_NOSpcX-mhXPWq-QwfE_6Zgg/exec';
+// ── CONFIGURAÇÃO ──────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/mercadolivre.com/s/AKfycbzuWOVfJYdOhSDjrQa9aBDsy_1SELHPOn0-x2ujn0fE_u3ixfwRWU5vaNwEzxyyC7O4tw/exec';
+// ─────────────────────────────────────────────────────────────────
+
 const COLORS = ['#4f80ff','#2ecc9a','#ff9f43','#7c57ff','#ff5757','#f7c948','#50c8e8','#e879a0'];
-let prefixInst = null, faixaInst = null, intervalSec = 180;
+let prefixInst = null, faixaInst = null;
+let intervalSec = 180;
 let autoTimer = null, countdownTimer = null, secondsLeft = 0;
 
-function getPrefix(code) { const m = code.match(/^([A-Za-z]+)/); return m ? m[1].toUpperCase() : code; }
+function parseGviz_OLD(text) {
+  // A API gviz retorna: google.visualization.Query.setResponse({...})
+  const json = text.replace(/^.*?setResponse\(/, '').replace(/\);?\s*$/, '');
+  const obj = JSON.parse(json);
+  const rows = obj.table.rows;
+  const out = [];
+  rows.forEach(r => {
+    const code = r.c[0]?.v;
+    const val  = r.c[1]?.v;
+    if (code && typeof val === 'number' && val > 0) out.push({ code: String(code).trim(), val });
+  });
+  return out.sort((a, b) => b.val - a.val);
+}
+
+function getPrefix(code) {
+  const m = code.match(/^([A-Za-z]+)/);
+  return m ? m[1].toUpperCase() : code;
+}
+
 function getPriority(val) {
   if (val > 40)  return { label: 'Crítico', cls: 'badge-critico' };
   if (val >= 20) return { label: 'Alto',    cls: 'badge-alto' };
   if (val >= 10) return { label: 'Médio',   cls: 'badge-medio' };
   return              { label: 'Baixo',   cls: 'badge-baixo' };
 }
+
 function getBarColor(val) {
   if (val > 40)  return '#ff5757';
   if (val >= 20) return '#ff9f43';
   if (val >= 10) return '#4f80ff';
   return '#2ecc9a';
 }
+
 function setStatus(state, msg) {
-  document.getElementById('statusDot').className = 'status-dot' + (state !== 'ok' ? ' ' + state : '');
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot' + (state !== 'ok' ? ' ' + state : '');
   document.getElementById('statusText').textContent = msg;
 }
+
 function startCountdown() {
   clearInterval(countdownTimer);
   secondsLeft = intervalSec;
@@ -213,85 +455,157 @@ function startCountdown() {
     if (secondsLeft <= 0) { clearInterval(countdownTimer); return; }
     const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
     const s = (secondsLeft % 60).toString().padStart(2, '0');
-    document.getElementById('countdownPill').textContent = 'Próx. atualização: ' + m + ':' + s;
+    document.getElementById('countdownPill').textContent = `Próx. atualização: ${m}:${s}`;
   }, 1000);
 }
+
 function scheduleNext() {
   clearTimeout(autoTimer);
   autoTimer = setTimeout(loadData, intervalSec * 1000);
   startCountdown();
 }
+
 function changeInterval() {
   intervalSec = parseInt(document.getElementById('intervalSelect').value);
   const labels = { 60: '1 min', 180: '3 min', 300: '5 min', 600: '10 min' };
-  document.getElementById('footerText').textContent = 'Atualização automática a cada ' + labels[intervalSec] + ' · Fonte: Google Sheets · 26 posições por carreta';
+  document.getElementById('footerText').textContent =
+    `Atualização automática a cada ${labels[intervalSec]} · Fonte: Google Sheets · 26 posições por carreta`;
   scheduleNext();
 }
+
 async function loadData() {
   const btn = document.getElementById('refreshBtn');
-  btn.classList.add('spin'); btn.disabled = true;
+  btn.classList.add('spin');
+  btn.disabled = true;
   setStatus('loading', 'Carregando...');
   document.getElementById('errorBox').style.display = 'none';
+
   try {
-    const res = await fetch(APPS_SCRIPT_URL + '?t=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    // Busca via Google Apps Script
+    const url = APPS_SCRIPT_URL + '?t=' + Date.now();
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
-    if (!json.canais) throw new Error('Formato inesperado');
+    if (!json.canais) throw new Error("Formato inesperado");
     const data = json.canais.filter(d => d.val > 0).sort((a, b) => b.val - a.val);
-    if (data.length === 0) throw new Error('Nenhum dado encontrado');
+    if (data.length === 0) throw new Error('Nenhum dado encontrado na planilha');
+
     renderDash(data);
-    document.getElementById('lastUpdate').textContent = 'Dados carregados: ' + new Date().toLocaleString('pt-BR');
+    const now = new Date().toLocaleString('pt-BR');
+    document.getElementById('lastUpdate').textContent = 'Dados carregados: ' + now;
     setStatus('ok', 'Ao vivo');
   } catch (e) {
-    document.getElementById('errorBox').textContent = '⚠️ Erro: ' + e.message;
-    document.getElementById('errorBox').style.display = 'block';
+    console.error(e);
+    const box = document.getElementById('errorBox');
+    box.textContent = '⚠️ Erro ao buscar dados: ' + e.message + '. Verifique se a planilha está pública (Compartilhar → Qualquer pessoa com o link).';
+    box.style.display = 'block';
     setStatus('error', 'Erro ao carregar');
   } finally {
-    btn.classList.remove('spin'); btn.disabled = false;
+    btn.classList.remove('spin');
+    btn.disabled = false;
     scheduleNext();
   }
 }
+
 function renderDash(data) {
-  const total = data.reduce((s, d) => s + d.val, 0);
+  const total    = data.reduce((s, d) => s + d.val, 0);
+  const carretas = Math.ceil(total / 26);
+
   document.getElementById('mTotal').textContent    = total.toLocaleString('pt-BR');
   document.getElementById('mCanais').textContent   = data.length;
   document.getElementById('mMaiorCod').textContent = data[0]?.code || '—';
   document.getElementById('mMaiorVal').textContent = (data[0]?.val || 0) + ' posições';
-  document.getElementById('mCarretas').textContent = Math.ceil(total / 26);
+  document.getElementById('mCarretas').textContent = carretas;
+
+  // Ranking bars
   const barsDiv = document.getElementById('bars');
   barsDiv.innerHTML = '';
   const max = data[0]?.val || 1;
   data.forEach(d => {
+    const pct = Math.round((d.val / max) * 100);
     const row = document.createElement('div');
     row.className = 'bar-row';
-    row.innerHTML = '<div class="bar-label" title="' + d.code + '">' + d.code + '</div><div class="bar-track"><div class="bar-fill" style="width:' + Math.round(d.val/max*100) + '%;background:' + getBarColor(d.val) + ';opacity:0.85;"></div></div><div class="bar-num">' + d.val + '</div>';
+    row.innerHTML = `
+      <div class="bar-label" title="${d.code}">${d.code}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%;background:${getBarColor(d.val)};opacity:0.85;"></div>
+      </div>
+      <div class="bar-num">${d.val}</div>`;
     barsDiv.appendChild(row);
   });
+
+  // Tabela
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
   data.forEach(d => {
-    const pr = getPriority(d.val);
-    tbody.innerHTML += '<tr><td><span class="mono">' + d.code + '</span></td><td style="color:var(--text2)">' + getPrefix(d.code) + '</td><td class="mono" style="font-weight:500">' + d.val + '</td><td class="mono">🚛 ' + Math.ceil(d.val/26) + '</td><td><span class="badge ' + pr.cls + '">' + pr.label + '</span></td><td style="color:var(--text3)">' + (d.val/total*100).toFixed(1) + '%</td></tr>';
+    const pr   = getPriority(d.val);
+    const pct  = ((d.val / total) * 100).toFixed(1);
+    const carr = Math.ceil(d.val / 26);
+    tbody.innerHTML += `<tr>
+      <td><span class="mono">${d.code}</span></td>
+      <td style="color:var(--text2)">${getPrefix(d.code)}</td>
+      <td class="mono" style="font-weight:500">${d.val}</td>
+      <td class="mono">🚛 ${carr}</td>
+      <td><span class="badge ${pr.cls}">${pr.label}</span></td>
+      <td style="color:var(--text3)">${pct}%</td>
+    </tr>`;
   });
+
+  // Donut prefixos
   const prefixMap = {};
-  data.forEach(d => { const p = getPrefix(d.code); prefixMap[p] = (prefixMap[p] || 0) + d.val; });
+  data.forEach(d => {
+    const p = getPrefix(d.code);
+    prefixMap[p] = (prefixMap[p] || 0) + d.val;
+  });
   const prefixes = Object.entries(prefixMap).sort((a, b) => b[1] - a[1]);
-  const pLabels = prefixes.map(p => p[0]), pVals = prefixes.map(p => p[1]);
-  const pColors = COLORS.slice(0, pLabels.length);
-  document.getElementById('prefixLegend').innerHTML = pLabels.map((l, i) => '<div class="legend-item"><div class="legend-dot" style="background:' + pColors[i] + '"></div>' + l + ' (' + pVals[i] + ')</div>').join('');
+  const pLabels  = prefixes.map(p => p[0]);
+  const pVals    = prefixes.map(p => p[1]);
+  const pColors  = COLORS.slice(0, pLabels.length);
+
+  document.getElementById('prefixLegend').innerHTML = pLabels.map((l, i) =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${pColors[i]}"></div>${l} (${pVals[i]})</div>`
+  ).join('');
+
   if (prefixInst) prefixInst.destroy();
   prefixInst = new Chart(document.getElementById('prefixChart'), {
     type: 'doughnut',
     data: { labels: pLabels, datasets: [{ data: pVals, backgroundColor: pColors, borderWidth: 0, hoverOffset: 4 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.raw + ' posições' } } }, cutout: '65%' }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} posições` } } },
+      cutout: '65%'
+    }
   });
+
+  // Barras criticidade
   if (faixaInst) faixaInst.destroy();
   faixaInst = new Chart(document.getElementById('faixaChart'), {
     type: 'bar',
-    data: { labels: ['Crítico (>40)','Alto (20–39)','Médio (10–19)','Baixo (<10)'], datasets: [{ data: [data.filter(d=>d.val>40).length, data.filter(d=>d.val>=20&&d.val<=40).length, data.filter(d=>d.val>=10&&d.val<20).length, data.filter(d=>d.val<10).length], backgroundColor: ['rgba(255,87,87,0.8)','rgba(255,159,67,0.8)','rgba(79,128,255,0.8)','rgba(46,204,154,0.8)'], borderRadius: 6, borderWidth: 0 }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#555d78', font: { size: 11 }, autoSkip: false, maxRotation: 0 } }, y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#555d78', stepSize: 1, font: { size: 11 } }, beginAtZero: true } } }
+    data: {
+      labels: ['Crítico (>40)', 'Alto (20–39)', 'Médio (10–19)', 'Baixo (<10)'],
+      datasets: [{
+        data: [
+          data.filter(d => d.val > 40).length,
+          data.filter(d => d.val >= 20 && d.val <= 40).length,
+          data.filter(d => d.val >= 10 && d.val < 20).length,
+          data.filter(d => d.val < 10).length
+        ],
+        backgroundColor: ['rgba(255,87,87,0.8)','rgba(255,159,67,0.8)','rgba(79,128,255,0.8)','rgba(46,204,154,0.8)'],
+        borderRadius: 6, borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} canalizações` } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#555d78', font: { size: 11 }, autoSkip: false, maxRotation: 0 } },
+        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#555d78', stepSize: 1, font: { size: 11 } }, beginAtZero: true }
+      }
+    }
   });
 }
+
+// Inicia
 loadData();
 </script>
 </body>
